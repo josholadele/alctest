@@ -1,0 +1,33 @@
+.btns input{
+    margin-right:5px;
+    margin-bottom: 3px;
+}
+.navbar-inverse {
+    background-color: #b44748;
+    border-color: #b44748;
+}
+.navbar {
+    border-radius: 0px;
+}
+.table > tbody > tr > td{
+    vertical-align: unset;
+}
+.fa{
+    padding: 0px 5px 0px 5px;
+}
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: #ffffff;
+}
+.table-striped > thead > tr {
+    background-color: #f9f9f9
+}
+.navbar-brand:hover, .navbar-inverse .navbar-brand:focus, .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    color: #9d9d9d;
+    background-color: transparent;
+}
+.navbar-inverse .navbar-brand, .navbar-inverse .navbar-nav > li > a  {
+    color: #ffffff;
+}
+.panel-title {
+    display: inline-block;
+}
