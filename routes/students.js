@@ -37,8 +37,8 @@ router.get('/student/:id',function(req,res,next){
 //Save Student
 router.post('/student', function(req,res,next){
     var student = req.body;
-    if(!student.text || !(student.isCompleted + '')){
-        res.statusCode(400)
+    if(!student.firstName || !(student.lastName)|| !(student.class)|| !(student.gender)){
+        res.status(400)
         res.json({
             "error": "Invalid Data"
         })
@@ -58,22 +58,15 @@ router.put('/student/:id', function(req,res,next){
     var student = req.body;
     var updObj = {};
 
-    if(student.isCompleted){
-        updObj.isCompleted = student.isCompleted
-    }
-    if(student.text){
-        updObj.text = student.text
-    }
-
-    if(!updObj){
-        res.statusCode(400)
+    if(!student.firstName || !(student.lastName)|| !(student.class)|| !(student.gender)){
+        res.status(400)
         res.json({
             "error": "Invalid Data"
         })
     }else{
         db.students.update({
             _id: mongojs.ObjectId(req.params.id)
-        }, updObj,{},function(err, result){
+        }, student,{},function(err, result){
             if(err){
                 res.send(err);
             }else{
@@ -83,17 +76,17 @@ router.put('/student/:id', function(req,res,next){
     }
 })
 
-//Update Student
+//Delete Student
 router.delete('/student/:id', function(req,res,next){
-    db.students.delete({
+    db.students.remove({
         _id: mongojs.ObjectId(req.params.id)
-    },'',function(err, result){
-        if(err){
-            res.send(err);
-        }else{
-            res.json(result);
-        }
-    });
+    },1,function(err, result){
+                if(err){
+                    res.send(err);
+                }else{
+                    res.json(result);
+                }
+            });
 });
 
 module.exports = router;

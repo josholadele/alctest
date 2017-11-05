@@ -25,7 +25,7 @@ app.use('/', index);
 app.use('/api/', students);
 
 app.get('/*', function(req, res) {
-    console.log('Redirecting to API')
+    // console.log('Redirecting to API')
     res.redirect('/api');
   });
 

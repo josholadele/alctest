@@ -14,6 +14,20 @@ require('rxjs/add/operator/map');
 var StudentsComponent = (function () {
     function StudentsComponent(_studentService) {
         this._studentService = _studentService;
+        this.newStudentData = {
+            firstName: '',
+            lastName: '',
+            class: '',
+            gender: '',
+            email: ''
+        };
+        this.updateStudentData = {
+            firstName: '',
+            lastName: '',
+            class: '',
+            gender: '',
+            email: ''
+        };
     }
     StudentsComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -22,49 +36,66 @@ var StudentsComponent = (function () {
             .map(function (res) { return res.json(); })
             .subscribe(function (students) { return _this.students = students; });
     };
-    StudentsComponent.prototype.addStudent = function ($event, studentText) {
-        var _this = this;
-        if ($event.which === 1) {
-            var result;
-            var newStudent = {
-                firstName: studentText.value,
-                lastName: "false",
-                email: "",
-                gender: "",
-                class: ""
-            };
-            result = this._studentService.saveStudent(newStudent);
-            result.subscribe(function (x) {
-                _this.students.push(newStudent);
-                studentText.value = '';
-            });
-        }
+    StudentsComponent.prototype.detailsClick = function ($event, id) {
+        var student = this.students[id];
+        document.getElementById('firstName').value = student.firstName;
+        document.getElementById('lastName').value = student.lastName;
+        document.getElementById('gender').value = student.gender;
+        document.getElementById('currentClass').value = student.class;
+        document.getElementById('emailAddress').value = student.email;
     };
-    StudentsComponent.prototype.updateStatus = function (student) {
-        var _student = {
-            _id: student._id,
-            text: student.text,
-            isCompleted: !student.isCompleted
+    StudentsComponent.prototype.editClick = function ($event, id) {
+        var student = this.students[id];
+        this.editId = id;
+        this.updateStudentData = {
+            firstName: student.firstName,
+            lastName: student.lastName,
+            class: student.class,
+            gender: student.gender,
+            email: student.email
         };
-        this._studentService.updateStudent(_student)
-            .map(function (res) { return res.json(); })
-            .subscribe(function (data) {
-            student.isCompleted = !student.isCompleted;
-        });
+        // document.getElementById('editFirstName').value = student.firstName
+        // document.getElementById('editLastName').value = student.lastName
+        // document.getElementById('editGender').value = student.gender
+        // document.getElementById('editCurrentClass').value = student.class
+        // document.getElementById('editEmailAddress').value = student.email
     };
-    StudentsComponent.prototype.setEditState = function (student, state) {
-        if (state) {
-            student.isEditMode = state;
-        }
-        else {
-            delete student.isEditMode;
+    StudentsComponent.prototype.deleteClick = function ($event, id) {
+        var student = this.students[id];
+        this.deleteId = id;
+        document.getElementById('deleteText').innerText = "This action cannot be undone. Delete " + student.firstName + " " + student.lastName + "?";
+    };
+    StudentsComponent.prototype.submitStudent = function () {
+        var _this = this;
+        var result;
+        result = this._studentService.saveStudent(this.newStudentData);
+        result.subscribe(function (x) {
+            _this.students.push(_this.newStudentData);
+        });
+        var modalCreate = document.getElementById('createModal');
+        modalCreate.modal("hide");
+    };
+    StudentsComponent.prototype.onDelete = function () {
+        this.deleteStudent(this.students[this.deleteId]);
+        // var modalDelete = document.getElementById('deleteModal').modal("hide")
+    };
+    StudentsComponent.prototype.onUpdate = function () {
+        var student = this.students[this.editId];
+        var updObj = this.updateStudentData;
+        updObj._id = student._id;
+        console.log(updObj);
+        if (updObj) {
+            // th
+            this._studentService.updateStudent(updObj)
+                .map(function (res) { return res.json(); })
+                .subscribe(function (data) {
+            });
         }
     };
     StudentsComponent.prototype.newStudentPage = function () {
         console.log("Add a new student not yet available");
     };
     StudentsComponent.prototype.updateStudentText = function ($event, student) {
-        var _this = this;
         if ($event.which === 13) {
             student.text = $event.target.value;
             var _student = {
@@ -75,12 +106,12 @@ var StudentsComponent = (function () {
             this._studentService.updateStudent(_student)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
-                _this.setEditState(student, false);
             });
         }
     };
     StudentsComponent.prototype.deleteStudent = function (student) {
         var students = this.students;
+        console.log(student._id);
         this._studentService.deleteStudent(student._id)
             .map(function (res) { return res.json(); })
             .subscribe(function (data) {
