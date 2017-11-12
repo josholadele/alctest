@@ -24,10 +24,10 @@ var StudentService = (function () {
         return this._http.post('/api/student', JSON.stringify(student), { headers: headers })
             .map(function (res) { return res.json(); });
     };
-    StudentService.prototype.updateStudent = function (student) {
+    StudentService.prototype.updateStudent = function (student, id) {
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        return this._http.put('/api/student/' + student._id, JSON.stringify(student), { headers: headers });
+        return this._http.put('/api/student/' + id, JSON.stringify(student), { headers: headers });
     };
     StudentService.prototype.deleteStudent = function (id) {
         return this._http.delete('/api/student/' + id);

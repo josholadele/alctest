@@ -17,7 +17,8 @@ router.get('/students',function(req,res,next){
 });
 
 router.get('/',function(req,res,next){
-    res.send('STUDENT APIs');
+    // res.send('STUDENT APIs');
+    res.render('api.html')
 });
 
 //Get Student by id

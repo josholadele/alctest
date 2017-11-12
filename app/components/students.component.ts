@@ -23,11 +23,11 @@ export class StudentsComponent implements OnInit{
     email: string
   };
   updateStudentData: {
-    firstName: '',
-    lastName: '',
-    class: '',
-    gender: '',
-    email:''
+    firstName: string,
+    lastName: string,
+    class: string,
+    gender: string,
+    email:string
   }
   
   constructor(private _studentService:StudentService){
@@ -75,12 +75,6 @@ export class StudentsComponent implements OnInit{
       email: student.email
     }
 
-    // document.getElementById('editFirstName').value = student.firstName
-    // document.getElementById('editLastName').value = student.lastName
-    // document.getElementById('editGender').value = student.gender
-    // document.getElementById('editCurrentClass').value = student.class
-    // document.getElementById('editEmailAddress').value = student.email
-
   }
   
   deleteClick($event, id){
@@ -97,47 +91,27 @@ export class StudentsComponent implements OnInit{
     result.subscribe(x => {
       this.students.push(this.newStudentData)
     })
-    var modalCreate = document.getElementById('createModal')
-    modalCreate.modal("hide")
+    document.getElementById('closeCreate').click()
   }
 
   onDelete(){
     this.deleteStudent(this.students[this.deleteId])
-    // var modalDelete = document.getElementById('deleteModal').modal("hide")
+    document.getElementById('closeDelete').click()
   }
 
   onUpdate(){
     var student = this.students[this.editId]
     var updObj = this.updateStudentData
-    updObj._id = student._id
+    var updWithId = updObj;
+    updWithId["_id"] = student._id
     console.log(updObj)
     if(updObj){
-      // th
-      this._studentService.updateStudent(updObj)
+      this._studentService.updateStudent(updObj,student._id)
       .map(res => res.json())
       .subscribe(data => {
-        
+        this.students[this.editId] = updWithId
       });
-    }
-  }
-
-  newStudentPage(){
-      console.log("Add a new student not yet available")
-  }
-  
-  updateStudentText($event, student){
-    if($event.which === 13){
-      student.text = $event.target.value;
-      var _student = {
-        _id: student._id,
-        text: student.text,
-        isCompleted: student.isCompleted
-      };
-      
-      this._studentService.updateStudent(_student)
-      .map(res => res.json())
-      .subscribe(data => {
-      });
+      document.getElementById('closeEdit').click()
     }
   }
   

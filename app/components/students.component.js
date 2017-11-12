@@ -54,11 +54,6 @@ var StudentsComponent = (function () {
             gender: student.gender,
             email: student.email
         };
-        // document.getElementById('editFirstName').value = student.firstName
-        // document.getElementById('editLastName').value = student.lastName
-        // document.getElementById('editGender').value = student.gender
-        // document.getElementById('editCurrentClass').value = student.class
-        // document.getElementById('editEmailAddress').value = student.email
     };
     StudentsComponent.prototype.deleteClick = function ($event, id) {
         var student = this.students[id];
@@ -72,41 +67,26 @@ var StudentsComponent = (function () {
         result.subscribe(function (x) {
             _this.students.push(_this.newStudentData);
         });
-        var modalCreate = document.getElementById('createModal');
-        modalCreate.modal("hide");
+        document.getElementById('closeCreate').click();
     };
     StudentsComponent.prototype.onDelete = function () {
         this.deleteStudent(this.students[this.deleteId]);
-        // var modalDelete = document.getElementById('deleteModal').modal("hide")
+        document.getElementById('closeDelete').click();
     };
     StudentsComponent.prototype.onUpdate = function () {
+        var _this = this;
         var student = this.students[this.editId];
         var updObj = this.updateStudentData;
-        updObj._id = student._id;
+        var updWithId = updObj;
+        updWithId["_id"] = student._id;
         console.log(updObj);
         if (updObj) {
-            // th
-            this._studentService.updateStudent(updObj)
+            this._studentService.updateStudent(updObj, student._id)
                 .map(function (res) { return res.json(); })
                 .subscribe(function (data) {
+                _this.students[_this.editId] = updWithId;
             });
-        }
-    };
-    StudentsComponent.prototype.newStudentPage = function () {
-        console.log("Add a new student not yet available");
-    };
-    StudentsComponent.prototype.updateStudentText = function ($event, student) {
-        if ($event.which === 13) {
-            student.text = $event.target.value;
-            var _student = {
-                _id: student._id,
-                text: student.text,
-                isCompleted: student.isCompleted
-            };
-            this._studentService.updateStudent(_student)
-                .map(function (res) { return res.json(); })
-                .subscribe(function (data) {
-            });
+            document.getElementById('closeEdit').click();
         }
     };
     StudentsComponent.prototype.deleteStudent = function (student) {

@@ -19,10 +19,10 @@ export class StudentService{
             .map(res => res.json());
     }
     
-    updateStudent(student){
+    updateStudent(student,id){
         var headers = new Headers();
         headers.append('Content-Type','application/json');
-        return this._http.put('/api/student/'+student._id, JSON.stringify(student),{headers: headers});
+        return this._http.put('/api/student/'+id, JSON.stringify(student),{headers: headers});
     }
     
     deleteStudent(id){
