@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main":"server.js",
   "scripts": {
+    "postinstall": "bower install",
     "lite": "lite-server",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
