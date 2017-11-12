@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main":"server.js",
   "scripts": {
-    "postinstall": "bower cache clean && bower install",
     "lite": "lite-server",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
@@ -31,8 +30,7 @@
     "body-parser": "*",
     "ejs":"*",
     "express":"*",
-    "mongojs":"*",
-    "bower":"*"
+    "mongojs":"*"
   },
   "devDependencies": {
     "concurrently": "^2.0.0",
