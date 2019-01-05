@@ -15,6 +15,35 @@ router.get('/students',function(req,res,next){
     })
     // res.send('STUDENT APIs');
 });
+router.get('/fyn',function(req,res,next){
+    db.fyn.find(function(err, fynEntries){
+        if(err){
+            res.send(err);
+        }else{
+            res.send(fynEntries[0].url);
+        }
+    })
+    // res.send('STUDENT APIs');
+});
+router.post('/fyn',function(req,res,next){
+    var postData = req.body;
+    db.fyn.find(function(err, fynEntries){
+        if(err){
+            res.send(err);
+        }else{
+            var entry1 = fynEntries[0];
+            db.fyn.update({
+                _id: mongojs.ObjectId(entry1._id)
+            }, postData,{},function(err, result){
+                if(err){
+                    res.send(err);
+                }else{
+                    res.send(result);
+                }
+            })
+        }
+    })
+});
 
 router.get('/',function(req,res,next){
     // res.send('STUDENT APIs');
